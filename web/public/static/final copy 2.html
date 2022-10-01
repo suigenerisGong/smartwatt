@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+
+    <script type="text/javascript" src="C:\Users\65484\Desktop\senior\js_pkgs\EventEmitter2-master\lib\eventemitter2.js"></script>
+    <script type="text/javascript" src="C:\Users\65484\Desktop\senior\js_pkgs\mjpegcanvasjs-develop\build\mjpegcanvas.min.js"></script>
+    <script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+    <script type="text/javascript" src="http://static.robotwebtools.org/mjpegcanvasjs/current/mjpegcanvas.min.js"></script>
+
+
+
+
+    <script src="http://static.robotwebtools.org/EaselJS/current/easeljs.min.js"></script>
+    <script src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+    <script src="http://static.robotwebtools.org/roslibjs/current/roslib.js"></script>
+    <script src="http://static.robotwebtools.org/ros2djs/current/ros2d.js"></script>
+    <script type="text/javascript" src="C:\Users\65484\Desktop\senior\js_pkgs\nav2djs-master\build\nav2d.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous">
+   <script type="text/javascript" src="https://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+   <script type="text/javascript" src="ros3d.js"></script>
+   <script type="text/javascript" src="main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript" type="text/javascript">
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    function init() {
+    // Create the main viewer.
+    var viewer = new MJPEGCANVAS.Viewer({
+      divID : 'mjpeg',
+      host : '192.168.1.107',
+      width : 640,
+      height : 480,
+      topic : '/camera/rgb/image_raw',
+      interval : 200
+    });
+  }
+
+
+
+
+
+
+  function init2() {
+    // Create the main viewer.
+    var viewer = new MJPEGCANVAS.Viewer({
+      divID : 'mjpeg2',
+      host : '192.168.1.107',
+      width : 640,
+      height : 480,
+      topic : '/camera/depth/image_rect',
+      interval : 200
+    });
+  }
+
+
+
+
+  function init3() {
+    // Create the main viewer.
+    var viewer = new MJPEGCANVAS.Viewer({
+      divID : 'thermal',
+      host : '192.168.1.107',
+      width : 640,
+      height : 480,
+      topic : '/thermal_image/image_raw',
+      interval : 200
+    });
+  }
+
+
+
+
+  // function init3() {
+  //   // Create the main viewer.
+  //   var viewer = new MJPEGCANVAS.Viewer({
+  //     divID : 'mjpeg3',
+  //     host : '192.168.1.107',
+  //     width : 640,
+  //     height : 480,
+  //     topic : '/camera/rgb/image_raw',
+  //     interval : 200
+  //   });
+  // }
+
+
+
+               
+
+
+
+
+
+
+  function init_2dmap() {
+    // Connect to ROS.
+    var ros = new ROSLIB.Ros({
+      url : 'ws://192.168.1.107:9090'
+    });
+
+    // Create the main viewer.
+    var viewer = new ROS2D.Viewer({
+      divID : 'nav',
+      width :640,
+      height : 480
+    });
+
+    // Setup the nav client.
+    var nav = NAV2D.OccupancyGridClientNav({
+      ros : ros,
+      topic : '/map',
+      rootObject : viewer.scene,
+      viewer : viewer,
+      serverName : '/move_base'
+    });
+  }
+
+
+
+
+
+
+  // var ros = new ROSLIB.Ros({
+  //       url : 'ws://192.168.1.107:9090'
+  //   });
+    
+  function init_3dmap() {
+
+    var ros = new ROSLIB.Ros({
+      url : 'ws://192.168.1.107:9090'
+    });
+
+var viewer = new ROS3D.Viewer({
+divID : '3dmap',
+width : 640,
+height : 480,
+antialias : true
+});
+
+
+// Setup the marker client.
+var gridClient = new ROS3D.OccupancyGridClient({
+ros : ros,
+rootObject : viewer.scene,
+continuous: true
+});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var ros = new ROSLIB.Ros({
+//         url : 'ws://192.168.1.107:9090'
+//     });
+// // Create the main viewer.
+
+// var cmdVel = new ROSLIB.Topic({
+//     ros : ros,
+//     name : '/cmd_vel', 
+//     messageType : 'geometry_msgs/Twist'
+//   });
+//   var twist_go = new ROSLIB.Message({
+//     linear : {
+//       x : 0.2,
+//       y : 0,
+//       z : 0
+//     },
+//     angular : {
+//       x : 0,
+//       y : 0,
+//       z : 0
+//     }
+//   });  
+//   function go(){
+//     cmdVel.publish(twist_go);
+// 		}
+
+
+//     var twist_left = new ROSLIB.Message({
+//     linear : {
+//       x : 0,
+//       y : -0.2,
+//       z : 0
+//     },
+//     angular : {
+//       x : 0,
+//       y : 0,
+//       z : 0
+//     }
+//   });  
+//   function left(){
+//     cmdVel.publish(twist_left);
+// 		}
+
+
+
+
+
+//     var twist_right = new ROSLIB.Message({
+//     linear : {
+//       x : 0,
+//       y : 0.2,
+//       z : 0
+//     },
+//     angular : {
+//       x : 0,
+//       y : 0,
+//       z : 0
+//     }
+//   });  
+//   function right(){
+//     cmdVel.publish(twist_right);
+// 		}
+
+
+//     var twist_back = new ROSLIB.Message({
+//     linear : {
+//       x : 0,
+//       y : 0,
+//       z : 0.2
+//     },
+//     angular : {
+//       x : 0,
+//       y : 0,
+//       z : 0
+//     }
+//   });  
+//   function back(){
+//     cmdVel.publish(twist_back);
+// 		}
+
+
+
+//     var twist_stop = new ROSLIB.Message({
+//     linear : {
+//       x : 0,
+//       y : 0,
+//       z : 0
+//     },
+//     angular : {
+//       x : 0,
+//       y : 0,
+//       z : 0
+//     }
+//   });  
+//   function stop(){
+//     cmdVel.publish(twist_stop);
+// 		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <title>我的页面7</title>
+    <style type="text/css">
+      body {
+        margin: 0;
+        height: 100vh;
+        background-color: rgb(255, 255, 255);
+      }
+      /* *{
+            border: 1px solid black;
+        } */
+
+      .yinying {
+        box-shadow: rgb(0 0 0/20%) 0px 2px 1px -1px,
+          rgb(0 0 0/14%) 0px 1px 1px 0px, rgb(0 0 0/12%) 0px 1px 3px 0px;
+      }
+      .flex {
+        display: flex;
+      }
+      .baise {
+        background-color: rgba(58, 88, 120, 0.6);
+      }
+      .flex1 {
+        flex: 1;
+      }
+      .column {
+        flex-direction: column;
+      }
+      .mg8 {
+        margin: 8px;
+      }
+      .mgr8 {
+        margin-right: 8px;
+      }
+      .mgl8 {
+        margin-left: 8px;
+      }
+      .yuanjiao {
+        -moz-border-radius: 13px;
+        border-radius: 13px;
+      }
+
+      .p1 {
+        text-indent: 2em;
+      }
+
+      @media (max-width: 600px) {
+        .ceBian {
+          display: none;
+        }
+        .neiRong {
+          flex-direction: column;
+        }
+      }
+      .bjimg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        min-width: 1000px;
+        z-index: -10;
+        zoom: 1;
+        background-attachment: fixed;
+        background-image: url("C:/Users/65484/Desktop/senior/js_pkgs/lab-3dslam-plotform-main/lab-3dslam-plotform-main/ros_web_visual/lib_web/index4/u=2638406194,523661981&fm=193&f=GIF.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center 0;
+      }
+
+      .btn {
+        /* 文字颜色 */
+        color: #0099cc;
+        /* 清除背景色 */
+        background: transparent;
+        /* 边框样式、颜色、宽度 */
+        border: 2px solid #0099cc;
+        /* 给边框添加圆角 */
+        border-radius: 6px;
+        /* 字母转大写 */
+        border: none;
+        color: white;
+        padding: 2px 4px;
+        text-align: center;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+      .btn1 {
+        background-color: white;
+        color: black;
+        border: 2px solid #008cba;
+      }
+      /* 悬停样式 */
+      .btn1:hover {
+        background-color: #008cba;
+        color: white;
+      }
+      .btn1:active {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+  </head>
+    <body class="flex " onload="init(),init2(),init3(),init_3dmap(),init_2dmap()" >
+    <div class="bjimg"></div>
+    <!--侧边栏-->
+    <div style="margin-left: 20px; width: 200px" class="baise yinying ceBian">
+      <div>
+        <div
+          style="
+            height: 30px;
+            width: 200px;
+            text-align: center;
+            font-size: large;
+            color: rgb(255, 255, 255);
+          "
+          class="baise yinying"
+        >
+          疫防通行
+        </div>
+        <div
+          class="p1 yuanjiao"
+          style="
+            border-bottom: 1px solid rgb(57, 52, 52);
+            height: 150px;
+            padding: 10px;
+            color: rgb(240, 244, 246);
+          "
+        >
+          <p>无接触智能配送紫外消杀一体机器人</p>
+          <p>紫外灯内外消杀，定点配送于一体的智能防疫机器人</p>
+        </div>
+      </div>
+      <div>
+        <div style="height: 20px; padding-top: 10px; padding-left: 10px;color: rgb(246, 243, 243);">
+          适用场景：
+        </div>
+
+        <table style="border: 2px; color: rgb(240, 244, 246)">
+          <tr>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="padding-top: 20px;padding-left: 5px;">
+              <img src="../../src/assets/hospital.png" width="30px" ; />
+            </td>
+            <td style="padding-top: 20px; padding-left: 10px;">医院药品配送</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="padding-top: 20px;padding-left: 5px;">
+              <img src="../../src/assets/hotel.png" width="30px" />
+            </td>
+            <td style="padding-top: 20px;padding-left: 10px;">酒店内部的物品配 <br> 送</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="padding-top: 10px;padding-left: 5px;">
+              <img src="../../src/assets/mask.png" width="30px" />
+            </td>
+            <td style="padding: 10px">疫情期间楼道紧急 <br> 物品的即时配送</td>
+          </tr>
+        </table>
+<img src="../../src/assets/car.png" width="200px">
+      </div>
+    </div>
+
+    <!--主区域-->
+    <div style="margin: 0 auto; margin-left: 15px;text-align: center" class="flex1 flex column">
+      <!--内容栏-->
+      <div style="flex: 1; overflow: scroll" class="flex column neiRong">
+        <div
+          style="height: 480px; width: 640px"
+          class="baise mg8 yinying neiRong"
+        >
+        <div id="mjpeg"></div>
+          <tr></tr>
+        </div>
+        <div
+          style="height: 480px; width: 640px"
+          class="baise mg8 yinying neiRong"
+        >
+        <div id="mjpeg2"></div>
+          <tr>
+            <td>hhh</td>
+            <td></td>
+          </tr>
+        </div>
+        <div
+          style="height: 480px; width: 640px"
+          class="baise mg8 yinying neiRong"
+        >
+        <div id="thermal"></div>
+        </div>
+        <div
+          style="height: 480px; width: 640px"
+          class="baise mg8 yinying neiRong"
+        >
+        <div id="3dmap"></div>
+        </div>
+
+
+
+
+        <div
+        style="height: 480px; width: 640px"
+        class="baise mg8 yinying neiRong"
+      >
+      <div id="nav"></div>
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </div>
+
+    <!--右区-->
+    <div style="flex: 1; margin-left: 20px;" class="flex column neiRong">
+      <!--数据监视区-->
+      <div
+        style="height: 450px; width: 250px"
+        class="baise mg8 yinying neiRong"
+      >
+        <text style="color: rgb(255, 254, 254)">
+          <div
+            style="height: 30px; margin: 0 auto; text-align: center"
+            class="baise yinying"
+          >
+            数据监控区
+          </div>
+          <div id="app">
+            <div
+              style="
+                border-bottom: 1px solid rgb(57, 52, 52);
+                height: 30px;
+                line-height: 30px;
+                padding-left: 10px;
+              "
+              class="yuanjiao"
+            >
+              电池电量：{{battery*100+"%"}}
+            </div>
+            <div
+              style="
+                border-bottom: 1px solid rgb(57, 52, 52);
+                height: 30px;
+                line-height: 30px;
+                padding-left: 10px;
+              "
+              class="yuanjiao"
+            >
+              室温：{{temperature+"℃"}}
+            </div>
+            <div
+              style="
+                border-bottom: 1px solid rgb(57, 52, 52);
+                height: 60px;
+                padding-left: 10px;
+              "
+              class="yuanjiao"
+            >
+              紫外灯状态：
+              <p>内部:{{ziwaidengIN}} 外部:{{ziwaidengOUT}}</p>
+            </div>
+            <div style="padding-left: 10px" class="yuanjiao">
+              当前状态：{{model}}
+              <!-- 配送模式信息 -->
+              <div v-if="class1">
+                <p>配送信息</p>
+                <p>
+                  地址： {{address}} <br />
+                  收件人电话：{{phone}}
+                </p>
+              </div>
+              <div v-if="class2">
+                <p>巡航模式</p>
+                <!-- <p>
+                  巡航路线：{{}} <br />
+                  状态：{{}}
+                </p> -->
+              </div>
+            </div>
+          </div>
+        </text>
+      </div>
+      <!--操控区-->
+      <div
+        style="height: 150px; width: 200px"
+        class="baise mg8 yinying neiRong"
+      >
+        <text style="color: #eee">
+          <div
+            style="height: 30px; margin: 0 auto; text-align: center"
+            class="baise yinying"
+          >
+            操作区
+          </div>
+          <div>
+            <div style="text-align: center">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              <button @click="forward" :disabled="loading || !connected" class="btn btn-primary">前</button>
+
+              <!-- <button onclick="go()" class="btn btn1 btn1:hover btn1:active">前</button> -->
+            </div>
+            <div style="text-align: center">
+              
+              <!-- <button onclick="left()" class="btn btn1 btn1:hover btn1:active">左</button>
+              <button onclick="stop()" class="btn btn1 btn1:hover btn1:active">停</button>
+              <button onclick="right()" class="btn btn1 btn1:hover btn1:active">右</button> -->
+
+
+
+
+
+
+              <button @click="turnLeft" :disabled="loading || !connected" class="btn btn-primary">左</button>
+              <button @click="stop" :disabled="loading || !connected" class="btn btn-danger">停</button>
+              <button @click="turnRight" :disabled="loading || !connected" class="btn btn-primary">右</button>
+            </div>
+            <div style="text-align: center">
+              <button @click="back" :disabled="loading || !connected" class="btn btn-primary">后</button>
+              <!-- <button onclick="back()" class="btn btn1 btn1:hover btn1:active">后</button> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+          </div>
+        </text>
+      </div>
+    </div>
+    <!-- 引入样式 -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+
+
+
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          battery: "0.86",
+          model: "配送模式",
+          class1: true,
+          class2: false,
+          temperature: "0",
+          address: "",
+          phone: "",
+          ziwaidengIN: "开",
+          ziwaidengOUT: "关",
+        },
+      });
+    </script>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script>
+      const TCP_URL = "ws://192.168.1.145:3881/mqtt";
+      const client = mqtt.connect(TCP_URL);
+      // 判断是否已成功连接
+      if (!client.connected) {
+        console.log("客户端连接成功。。。。。。。");
+      }
+
+      client.on("connect", function () {
+        // client.subscribe('/test/1');
+        client.subscribe("/phone");
+        console.log('"/phone" start... ');
+        client.subscribe("/address");
+        console.log('"/address" start... ');
+        client.subscribe("/cur_battery");
+        console.log('"/battery" start... ');
+        client.subscribe("/temperature");
+        console.log('"/temperature" start... ');
+        client.subscribe("/model");
+        console.log('"/model" start... ');
+      });
+
+      client.on("message", function (topic, message) {
+        //message is Buffer
+        //console.log(message.toString());
+        // if (topic == "/cur_battery") {
+        //   const res = JSON.parse(message.toString());
+        //   //console.log(topic + ": ", res);
+        //   app.battery = res;
+        //   console.log("battery:", app.battery);
+        // }
+        if (topic == "/temperature") {
+          const res = JSON.parse(message.toString());
+          //console.log(topic + ": ", res);
+          app.temperature = res;
+          console.log("temperature:", app.temperature);
+        }
+        if (topic == "/phone") {
+          const res = JSON.parse(message.toString());
+          app.phone = res;
+        }
+        if (topic == "/address") {
+          const res = JSON.parse(message.toString());
+          app.address = res;
+        }
+        if (topic == "/model") {
+          const res = JSON.parse(message.toString());
+          if (res == 1) {
+            app.model = "巡航模式";
+            app.class2 = true;
+            app.ziwaidengOUT = "开";
+            app.ziwaidengIN = "关";
+          }
+          if (res == 0) {
+            app.model = "配送模式";
+            app.class1 = true;
+            app.ziwaidengIN = "开";
+            app.ziwaidengOUT = "关";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
